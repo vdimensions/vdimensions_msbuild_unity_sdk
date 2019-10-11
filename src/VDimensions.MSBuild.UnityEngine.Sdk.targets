@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project>
+  <PropertyGroup>
+    <!-- make MSBuild track this file for incremental builds. -->
+    <!-- ref https://blogs.msdn.microsoft.com/msbuild/2005/09/26/how-to-ensure-changes-to-a-custom-target-file-prompt-a-rebuild/ -->
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+  </PropertyGroup>
+
+  <Choose>
+    <!-- <When Condition="Exists('C:\Program Files\Unity\Hub\Editor\2019.2.8f1\Editor\Data')">
+      <PropertyGroup>
+        <UnityAssemblyPath>C:\Program Files\Unity\Hub\Editor\2019.2.8f1\Editor\Data</UnityAssemblyPath>
+      </PropertyGroup>
+    </When> -->
+    <When Condition="Exists('C:\Program Files\Unity\Hub\Editor\2019.2.7f1\Editor\Data\Managed')">
+      <PropertyGroup>
+        <UnityAssemblyPath>C:\Program Files\Unity\Hub\Editor\2019.2.7f1\Editor\Data\Managed</UnityAssemblyPath>
+      </PropertyGroup>
+    </When>
+    <When Condition="Exists('C:\Program Files\Unity\Hub\Editor\2019.2.6f1\Editor\Data\Managed')">
+      <PropertyGroup>
+        <UnityAssemblyPath>C:\Program Files\Unity\Hub\Editor\2019.2.6f1\Editor\Data\Managed</UnityAssemblyPath>
+      </PropertyGroup>
+    </When>
+    <When Condition="Exists('C:\Program Files\Unity\Hub\Editor\2019.2.5f1\Editor\Data\Managed')">
+      <PropertyGroup>
+        <UnityAssemblyPath>C:\Program Files\Unity\Hub\Editor\2019.2.5f1\Editor\Data\Managed</UnityAssemblyPath>
+      </PropertyGroup>
+    </When>
+    <When Condition="Exists('C:\Program Files\Unity\Hub\Editor\2019.2.4f1\Editor\Data\Managed')">
+      <PropertyGroup>
+        <UnityAssemblyPath>C:\Program Files\Unity\Hub\Editor\2019.2.4f1\Editor\Data\Managed</UnityAssemblyPath>
+      </PropertyGroup>
+    </When>
+  </Choose>
+
+  <Choose>
+    <When Condition="Exists('$(UnityAssemblyPath)\..\Resources\PackageManager\ProjectTemplates\libcache\com.unity.template.3dextra-3.2.3\ScriptAssemblies')">
+      <PropertyGroup>
+        <UnityScriptAssembliesPath>$(UnityAssemblyPath)\..\Resources\PackageManager\ProjectTemplates\libcache\com.unity.template.3dextra-3.2.3\ScriptAssemblies</UnityScriptAssembliesPath>
+      </PropertyGroup>
+    </When>
+    <When Condition="Exists('$(UnityAssemblyPath)\..\Resources\PackageManager\ProjectTemplates\libcache\com.unity.template.3d-3.1.2\ScriptAssemblies')">
+      <PropertyGroup>
+        <UnityScriptAssembliesPath>$(UnityAssemblyPath)\..\Resources\PackageManager\ProjectTemplates\libcache\com.unity.template.3d-3.1.2\ScriptAssemblies</UnityScriptAssembliesPath>
+      </PropertyGroup>
+    </When>
+    <When Condition="Exists('$(UnityAssemblyPath)\Resources\PackageManager\ProjectTemplates\libcache\com.unity.template.2d-3.1.2\ScriptAssemblies')">
+      <PropertyGroup>
+        <UnityScriptAssembliesPath>$(UnityAssemblyPath)\Resources\PackageManager\ProjectTemplates\libcache\com.unity.template.2d-3.1.2\ScriptAssemblies</UnityScriptAssembliesPath>
+      </PropertyGroup>
+    </When>
+  </Choose>
+
+  <ItemGroup Condition=" '$(UnityAssemblyPath)' != '' ">
+    <Reference Include="UnityEngine">
+      <HintPath>$(UnityAssemblyPath)\UnityEngine.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(UnityScriptAssembliesPath)' != '' ">
+    <Reference Include="UnityEngine.UI">
+      <HintPath>$(UnityScriptAssembliesPath)\UnityEngine.UI.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(UnityAssemblyPath)' != '' AND '$(IsUnityEditorProject)' == 'true' ">
+    <Reference Include="UnityEditor">
+      <HintPath>$(UnityAssemblyPath)\UnityEditor.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEditor.UI">
+      <HintPath>$(UnityScriptAssembliesPath)\UnityEditor.UI.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+</Project>
