@@ -14,43 +14,48 @@
     </When> -->
     <When Condition="Exists('C:\Program Files\Unity\Hub\Editor\2019.2.7f1\Editor\Data\Managed')">
       <PropertyGroup>
-        <UnityAssemblyPath>C:\Program Files\Unity\Hub\Editor\2019.2.7f1\Editor\Data\Managed</UnityAssemblyPath>
+        <_UnityAssemblyPath>C:\Program Files\Unity\Hub\Editor\2019.2.7f1\Editor\Data\Managed</_UnityAssemblyPath>
       </PropertyGroup>
     </When>
     <When Condition="Exists('C:\Program Files\Unity\Hub\Editor\2019.2.6f1\Editor\Data\Managed')">
       <PropertyGroup>
-        <UnityAssemblyPath>C:\Program Files\Unity\Hub\Editor\2019.2.6f1\Editor\Data\Managed</UnityAssemblyPath>
+        <_UnityAssemblyPath>C:\Program Files\Unity\Hub\Editor\2019.2.6f1\Editor\Data\Managed</_UnityAssemblyPath>
       </PropertyGroup>
     </When>
     <When Condition="Exists('C:\Program Files\Unity\Hub\Editor\2019.2.5f1\Editor\Data\Managed')">
       <PropertyGroup>
-        <UnityAssemblyPath>C:\Program Files\Unity\Hub\Editor\2019.2.5f1\Editor\Data\Managed</UnityAssemblyPath>
+        <_UnityAssemblyPath>C:\Program Files\Unity\Hub\Editor\2019.2.5f1\Editor\Data\Managed</_UnityAssemblyPath>
       </PropertyGroup>
     </When>
     <When Condition="Exists('C:\Program Files\Unity\Hub\Editor\2019.2.4f1\Editor\Data\Managed')">
       <PropertyGroup>
-        <UnityAssemblyPath>C:\Program Files\Unity\Hub\Editor\2019.2.4f1\Editor\Data\Managed</UnityAssemblyPath>
+        <_UnityAssemblyPath>C:\Program Files\Unity\Hub\Editor\2019.2.4f1\Editor\Data\Managed</_UnityAssemblyPath>
       </PropertyGroup>
     </When>
   </Choose>
 
   <Choose>
-    <When Condition="Exists('$(UnityAssemblyPath)\..\Resources\PackageManager\ProjectTemplates\libcache\com.unity.template.3dextra-3.2.3\ScriptAssemblies')">
+    <When Condition="Exists('$(_UnityAssemblyPath)\..\Resources\PackageManager\ProjectTemplates\libcache\com.unity.template.3dextra-3.2.3\ScriptAssemblies')">
       <PropertyGroup>
-        <UnityScriptAssembliesPath>$(UnityAssemblyPath)\..\Resources\PackageManager\ProjectTemplates\libcache\com.unity.template.3dextra-3.2.3\ScriptAssemblies</UnityScriptAssembliesPath>
+        <_UnityScriptAssembliesPath>$(_UnityAssemblyPath)\..\Resources\PackageManager\ProjectTemplates\libcache\com.unity.template.3dextra-3.2.3\ScriptAssemblies</_UnityScriptAssembliesPath>
       </PropertyGroup>
     </When>
-    <When Condition="Exists('$(UnityAssemblyPath)\..\Resources\PackageManager\ProjectTemplates\libcache\com.unity.template.3d-3.1.2\ScriptAssemblies')">
+    <When Condition="Exists('$(_UnityAssemblyPath)\..\Resources\PackageManager\ProjectTemplates\libcache\com.unity.template.3d-3.1.2\ScriptAssemblies')">
       <PropertyGroup>
-        <UnityScriptAssembliesPath>$(UnityAssemblyPath)\..\Resources\PackageManager\ProjectTemplates\libcache\com.unity.template.3d-3.1.2\ScriptAssemblies</UnityScriptAssembliesPath>
+        <_UnityScriptAssembliesPath>$(_UnityAssemblyPath)\..\Resources\PackageManager\ProjectTemplates\libcache\com.unity.template.3d-3.1.2\ScriptAssemblies</_UnityScriptAssembliesPath>
       </PropertyGroup>
     </When>
-    <When Condition="Exists('$(UnityAssemblyPath)\Resources\PackageManager\ProjectTemplates\libcache\com.unity.template.2d-3.1.2\ScriptAssemblies')">
+    <When Condition="Exists('$(_UnityAssemblyPath)\Resources\PackageManager\ProjectTemplates\libcache\com.unity.template.2d-3.1.2\ScriptAssemblies')">
       <PropertyGroup>
-        <UnityScriptAssembliesPath>$(UnityAssemblyPath)\Resources\PackageManager\ProjectTemplates\libcache\com.unity.template.2d-3.1.2\ScriptAssemblies</UnityScriptAssembliesPath>
+        <_UnityScriptAssembliesPath>$(_UnityAssemblyPath)\Resources\PackageManager\ProjectTemplates\libcache\com.unity.template.2d-3.1.2\ScriptAssemblies</_UnityScriptAssembliesPath>
       </PropertyGroup>
     </When>
   </Choose>
+
+  <PropertyGroup>
+    <UnityAssemblyPath Condition=" '$(UnityAssemblyPath)' == '' AND '$(_UnityAssemblyPath)' != '' ">$(_UnityAssemblyPath)</UnityAssemblyPath>
+    <UnityScriptAssembliesPath Condition=" '$(UnityScriptAssembliesPath)' == '' AND '$(_UnityScriptAssembliesPath)' != '' ">$(_UnityScriptAssembliesPath)</UnityScriptAssembliesPath>
+  </PropertyGroup>
 
   <ItemGroup Condition=" '$(UnityAssemblyPath)' != '' ">
     <Reference Include="UnityEngine">
@@ -71,9 +76,16 @@
       <HintPath>$(UnityAssemblyPath)\UnityEditor.dll</HintPath>
       <Private>false</Private>
     </Reference>
+  </ItemGroup>
+  <ItemGroup Condition=" '$(UnityScriptAssembliesPath)' != '' AND '$(IsUnityEditorProject)' == 'true' ">
     <Reference Include="UnityEditor.UI">
       <HintPath>$(UnityScriptAssembliesPath)\UnityEditor.UI.dll</HintPath>
       <Private>false</Private>
     </Reference>
   </ItemGroup>
+
+  <Target Name="Print Unity Assemblies" BeforeTargets="Build">
+    <Message Text="Using UnityAssemblyPath = $(UnityAssemblyPath)" Importance="high" />
+    <Message Text="Using UnityScriptAssembliesPath = $(UnityScriptAssembliesPath)" Importance="high" />
+  </Target>
 </Project>
